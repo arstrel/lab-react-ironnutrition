@@ -4,6 +4,7 @@ import "./App.css";
 import "bulma/css/bulma.css";
 import foods from "./foods.json";
 import FoodBox from "./components/foodbox/FoodBox";
+import TodayLunch from './components/todayLunch/todayLunch';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,32 @@ class App extends Component {
       newCalories: "",
       newImage: "",
       search: "",
+      todayFoodList: [],
+      todayTotal: 0,
     };
+  }
+
+  showTodayLunch = () => {
+    
+    return this.state.todayFoodList
+    .map((eachFood, i)=> {
+      return (
+     
+        <TodayLunch 
+        key={i}
+        name={eachFood.name}
+        calories={eachFood.calories} 
+        /> 
+      )
+    })
+  }
+  
+
+  addTodayFood = (whichToAdd) => {
+    let clone = [...this.state.todayFoodList];
+    clone.unshift(this.state.foods[whichToAdd])
+
+    this.setState({todayFoodList : clone})
   }
 
   showFood() {
@@ -31,6 +57,7 @@ class App extends Component {
           name={eachFood.name}
           calories={eachFood.calories}
           image={eachFood.image}
+          addToToday={()=>{this.addTodayFood(i)}}
         />
       );
     });
@@ -127,12 +154,16 @@ class App extends Component {
                 New food form
               </button>
               {this.state.showForm && this.showNewFoodForm()}
-              <h2 className="subtitle">Today's foods</h2>
+
+              <div>
+               <h2 className="subtitle">Today's foods</h2>
               <ul className="no-dot">
-                <li>1 Pizza = 400 cal</li>
-                <li>2 Salad = 300 cal</li>
-              </ul>
-              <strong>Total: 700 cal</strong>
+              {this.showTodayLunch()}
+             </ul>
+              <strong>Total: {this.state.todayTotal} cal</strong>
+            </div>
+              
+
             </div>
           </div>
         </div>

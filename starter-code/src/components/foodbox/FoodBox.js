@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import './foodbox.css';
 
 class FoodBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      amount: 1,
+
+    }
+  }
+
+  updateInput = (e) => {
+    this.setState({amount: e.target.value})
+  }
+  
+
   render() {
     return (
      <div className="wrapper">
@@ -26,11 +39,12 @@ class FoodBox extends Component {
           <input
             className="input"
             type="number" 
-            value="1"
+            value={this.state.amount}
+            onChange={this.updateInput}
           />
         </div>
         <div className="control">
-          <button className="button is-info">
+          <button className="button is-info" onClick={this.props.addToToday}>
             +
           </button>
         </div>
