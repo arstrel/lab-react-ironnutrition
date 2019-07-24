@@ -4,7 +4,7 @@ import "./App.css";
 import "bulma/css/bulma.css";
 import foods from "./foods.json";
 import FoodBox from "./components/foodbox/FoodBox";
-import TodayLunch from './components/todayLunch/todayLunch';
+import TodayLunch from "./components/todayLunch/todayLunch";
 
 class App extends Component {
   constructor(props) {
@@ -17,50 +17,39 @@ class App extends Component {
       newImage: "",
       search: "",
       todayFoodList: [],
-      todayTotal: 0,
+      todayTotal: 0
     };
   }
 
-  showTodayLunch = () => {
-    
-    return this.state.todayFoodList
-    .map((eachFood, i)=> {
-      return (
-     
-        <TodayLunch 
-        key={i}
-        name={eachFood.name}
-        calories={eachFood.calories} 
-        /> 
-      )
-    })
-  }
-  
-
-  addTodayFood = (whichToAdd) => {
+  addTodayFood = (whichToAdd, amount) => {
+    console.log(amount);
     let clone = [...this.state.todayFoodList];
-    clone.unshift(this.state.foods[whichToAdd])
+    clone.push(this.state.foods[whichToAdd]);
+    let sum = clone.reduce((a,b)=> {
+      return a+b.calories
+    },0)
+    this.setState({ todayFoodList: clone, todayTotal: sum });
+   
+  };
 
-    this.setState({todayFoodList : clone})
-  }
+ 
 
   showFood() {
-    
     return this.state.foods
-    .filter((foodObj)=> {
-      return (foodObj.name).toLowerCase().includes(this.state.search)
-    })
-    .map((eachFood, i) => {
-      return (
-        <FoodBox
-          key={i}
-          name={eachFood.name}
-          calories={eachFood.calories}
-          image={eachFood.image}
-          addToToday={()=>{this.addTodayFood(i)}}
-        />
-      );
-    });
+      .filter(foodObj => {
+        return foodObj.name.toLowerCase().includes(this.state.search);
+      })
+      .map((eachFood, i) => {
+        return (
+          <FoodBox
+            key={i}
+            index = {i}
+            name={eachFood.name}
+            calories={eachFood.calories}
+            image={eachFood.image}
+            add={this.addTodayFood} />
+        );
+      });
   }
 
   showNewFoodForm() {
@@ -123,9 +112,10 @@ class App extends Component {
     this.setState({ showForm: !this.state.showForm });
   }
 
-  handleSearch = (e) => {
-    this.setState({search: e.target.value});
-  } 
+  handleSearch = e => {
+    this.setState({ search: e.target.value });
+  };
+  
 
   render() {
     return (
@@ -154,16 +144,8 @@ class App extends Component {
                 New food form
               </button>
               {this.state.showForm && this.showNewFoodForm()}
-
-              <div>
-               <h2 className="subtitle">Today's foods</h2>
-              <ul className="no-dot">
-              {this.showTodayLunch()}
-             </ul>
-              <strong>Total: {this.state.todayTotal} cal</strong>
-            </div>
               
-
+              <TodayLunch today={this.state.todayFoodList} total={this.state.todayTotal}/>
             </div>
           </div>
         </div>

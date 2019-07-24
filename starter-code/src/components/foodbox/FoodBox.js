@@ -44,7 +44,7 @@ class FoodBox extends Component {
           />
         </div>
         <div className="control">
-          <button className="button is-info" onClick={this.props.addToToday}>
+          <button className="button is-info" onClick={()=>{this.props.add(this.props.index, this.state.amount)}}>
             +
           </button>
         </div>

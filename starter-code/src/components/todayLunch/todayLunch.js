@@ -1,12 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class TodayLunch extends Component {
+ 
+  showTodayLunch = () => {
+    return this.props.today.map((eachFood, i) => {
+      
+      return (
+        <li key={i}>
+          {i+1}) {eachFood.name} = {eachFood.calories} cal
+        </li>
+      );
+    });
+  };
+
   render() {
     return (
-     
-      <li>{this.props.key} {this.props.name} = {this.props.calories} cal</li>
-                
-             
+      <div>
+        <h2 className="subtitle">Today's foods</h2>
+        <ul className="no-dot">{this.showTodayLunch()}</ul>
+        <strong>Total: {this.props.total} cal</strong>
+      </div>
     );
   }
 }
