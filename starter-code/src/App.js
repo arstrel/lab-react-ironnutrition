@@ -22,14 +22,18 @@ class App extends Component {
   }
 
   addTodayFood = (whichToAdd, amount) => {
-    console.log(amount);
     let clone = [...this.state.todayFoodList];
-    clone.push(this.state.foods[whichToAdd]);
+    let newFoodObj = {
+      name: this.state.foods[whichToAdd].name,
+      calories: this.state.foods[whichToAdd].calories,
+      quantity: amount,
+    }
+    clone.push(newFoodObj);
     let sum = clone.reduce((a,b)=> {
       return a+b.calories
     },0)
     this.setState({ todayFoodList: clone, todayTotal: sum });
-   
+   //need to calculate total * quantity here
   };
 
  

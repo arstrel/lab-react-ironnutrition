@@ -7,7 +7,7 @@ class TodayLunch extends Component {
       
       return (
         <li key={i}>
-          {i+1}) {eachFood.name} = {eachFood.calories} cal
+          {i+1}) {eachFood.quantity} x {eachFood.name} = {eachFood.calories * eachFood.quantity} cal
         </li>
       );
     });
