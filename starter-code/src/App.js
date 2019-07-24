@@ -30,10 +30,9 @@ class App extends Component {
     }
     clone.push(newFoodObj);
     let sum = clone.reduce((a,b)=> {
-      return a+b.calories
+      return a+(b.calories * b.quantity)
     },0)
     this.setState({ todayFoodList: clone, todayTotal: sum });
-   //need to calculate total * quantity here
   };
 
  
@@ -41,7 +40,7 @@ class App extends Component {
   showFood() {
     return this.state.foods
       .filter(foodObj => {
-        return foodObj.name.toLowerCase().includes(this.state.search);
+        return foodObj.name.toLowerCase().includes(this.state.search.toLowerCase());
       })
       .map((eachFood, i) => {
         return (
@@ -99,8 +98,8 @@ class App extends Component {
     let clone = [...this.state.foods];
     let newFood = {
       name: this.state.newName,
-      calories: this.state.newCalories,
-      image: this.state.newImage
+      calories: +this.state.newCalories,
+      image: this.state.newImage || "http://shepherdanddogpub.co.uk/wp-content/uploads/2018/09/Fresh-Veg.jpg"
     };
     clone.unshift(newFood);
     this.setState({ foods: clone });
@@ -143,9 +142,8 @@ class App extends Component {
                 onClick={() => {
                   this.handleFormShow();
                 }}
-                className="button"
-              >
-                New food form
+                className={`button ${this.state.showForm ? 'is-warning' : 'is-success'}`}>
+                {this.state.showForm ? "Hide form" : "New food form"}
               </button>
               {this.state.showForm && this.showNewFoodForm()}
               
